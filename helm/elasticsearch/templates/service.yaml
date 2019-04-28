@@ -3,9 +3,6 @@ kind: Service
 apiVersion: v1
 metadata:
   name: {{ template "uname" . }}
-{{- if .Values.namespace }}
-  namespace: {{ .Values.namespace | quote }}
-{{- end }}
 spec:
   selector:
     heritage: {{ .Release.Service | quote }}

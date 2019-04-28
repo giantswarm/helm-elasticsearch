@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: 6.7.1
-description: A Helm chart for Elasticsearch -- testing
-name: elasticsearch
-version: 0.1.1

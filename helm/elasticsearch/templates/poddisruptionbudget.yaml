@@ -4,9 +4,6 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: "{{ template "uname" . }}-pdb"
-{{- if .Values.namespace }}
-  namespace: {{ .Values.namespace | quote }}
-{{- end }}
 spec:
   maxUnavailable: {{ .Values.maxUnavailable }}
   selector:

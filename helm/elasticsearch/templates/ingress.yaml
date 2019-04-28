@@ -6,9 +6,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
-{{- if .Values.namespace }}
-  namespace: {{ .Values.namespace | quote }}
-{{- end }}
   labels:
     app: {{ .Chart.Name }}
     release: {{ .Release.Name }}
