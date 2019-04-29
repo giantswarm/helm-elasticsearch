@@ -19,31 +19,34 @@ maxUnavailable: 1
 # Extra environment variables to append to this nodeGroup
 # This will be appended to the current 'env:' key. You can use any of the kubernetes env
 # syntax here
-extraEnvs:
-- name: opendistro_security.ssl.http.enabled
-  value: "false"
+# extraEnvs:
+# - name: opendistro_security.ssl.http.enabled
+#   value: "false"
 
 # A list of secrets and their paths to mount inside the pod
 # This is useful for mounting certificates for security and for mounting
 # the X-Pack license
-secretMounts: 
+# secretMounts: 
 #  - name: elastic-certificates
 #    secretName: elastic-certificates
 #    path: /usr/share/elasticsearch/config/certs
 
-image: "amazon/opendistro-for-elasticsearch"
-imageTag: "0.8.0"
-imagePullPolicy: "IfNotPresent"
+image: "docker.elastic.co/elasticsearch/elasticsearch-oss"
+imageTag: "6.7.1"
 
-esJavaOpts: "-Xmx1g -Xms1g"
+# image: "amazon/opendistro-for-elasticsearch"
+# imageTag: "0.8.0"
+imagePullPolicy: "IfNotPresent"
 
 resources:
   requests:
     cpu: "100m"
-    memory: "2Gi"
+    memory: "8Gi"
   limits:
     cpu: "1000m"
-    memory: "2Gi"
+    memory: "8Gi"
+
+esJavaOpts: "-Xmx4g -Xms4g"
 
 networkHost: "0.0.0.0"
 
@@ -54,7 +57,7 @@ volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]
   resources:
     requests:
-      storage: 10Gi
+      storage: 500Gi
 
 antiAffinity: "hard"
 antiAffinityTopologyKey: "kubernetes.io/hostname" 
@@ -81,9 +84,9 @@ imagePullSecrets: []
 nodeSelector: {}
 tolerations: []
 
-esConfig:
-  elasticsearch.yml: |
-    opendistro_security.disabled: true
+# esConfig:
+#   elasticsearch.yml: |
+#     opendistro_security.disabled: true
 
 ingress:
   enabled: false
