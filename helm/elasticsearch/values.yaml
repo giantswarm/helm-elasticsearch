@@ -43,10 +43,10 @@ resources:
     cpu: "100m"
     memory: "8Gi"
   limits:
-    cpu: "1000m"
+    cpu: "4000m"
     memory: "8Gi"
 
-esJavaOpts: "-Xmx4g -Xms4g"
+esJavaOpts: "-Xmx12g -Xms12g"
 
 networkHost: "0.0.0.0"
 
@@ -54,7 +54,8 @@ persistence:
   annotations: {}
 
 volumeClaimTemplate:
-  accessModes: [ "ReadWriteOnce" ]
+  accessModes: ["ReadWriteMany"]
+  storageClassName: af-standard
   resources:
     requests:
       storage: 500Gi
@@ -75,7 +76,7 @@ fsGroup: 1000
 
 readinessProbe:
   failureThreshold: 3
-  initialDelaySeconds: 10
+  initialDelaySeconds: 60
   periodSeconds: 10
   successThreshold: 3
   timeoutSeconds: 5
