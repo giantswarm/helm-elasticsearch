@@ -54,8 +54,7 @@ persistence:
   annotations: {}
 
 volumeClaimTemplate:
-  accessModes: ["ReadWriteMany"]
-  storageClassName: af-standard
+  accessModes: ["ReadWriteOnce"]
   resources:
     requests:
       storage: 500Gi

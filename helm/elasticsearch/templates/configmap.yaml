@@ -1,4 +1,4 @@
-{{- if .Values.esConfig }}
+{{- if .Values.esConfig or .Values.volumeClaimTemplate }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -10,8 +10,16 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     app: "{{ template "uname" . }}"
 data:
+{{- if .Values.esConfig }}
 {{- range $path, $config := .Values.esConfig }}
   {{ $path }}: |
 {{ $config | indent 4 -}}
+{{- end -}}
+
+{{- if .Values.volumeClaimTemplate }}
+{{- range $path, $config := .Values.volumeClaimTemplate }}
+  {{ $path }}: |
+{{ $config | indent 4 -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
