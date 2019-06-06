@@ -54,7 +54,8 @@ persistence:
   annotations: {}
 
 volumeClaimTemplate:
-  accessModes: ["ReadWriteOnce"]
+  accessModes: [ "ReadWriteOnce" ]
+  storageClassName: "default"
   resources:
     requests:
       storage: 500Gi

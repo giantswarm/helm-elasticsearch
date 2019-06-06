@@ -1,5 +1,3 @@
-{{- if .Values.esConfig or .Values.volumeClaimTemplate }}
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,14 +10,13 @@ metadata:
 data:
 {{- if .Values.esConfig }}
 {{- range $path, $config := .Values.esConfig }}
-  {{ $path }}: |
-{{ $config | indent 4 -}}
+  {{ $path }}: |-
+{{ $config | indent 4 }}
 {{- end -}}
-
+{{- end -}}
 {{- if .Values.volumeClaimTemplate }}
-{{- range $path, $config := .Values.volumeClaimTemplate }}
-  {{ $path }}: |
-{{ $config | indent 4 -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
+{{- range $path, $volume := .Values.volumeClaimTemplate }}
+  {{ $path }}: |-
+{{ toYaml $volume | indent 6 }}
+{{- end }}
+{{- end }}
