@@ -44,9 +44,9 @@ resources:
     memory: "8Gi"
   limits:
     cpu: "4000m"
-    memory: "8Gi"
+    memory: "12Gi"
 
-esJavaOpts: "-Xmx12g -Xms12g"
+esJavaOpts: "-Xmx8g -Xms8g"
 
 networkHost: "0.0.0.0"
 
