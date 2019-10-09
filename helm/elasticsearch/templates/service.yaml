@@ -3,17 +3,28 @@ kind: Service
 apiVersion: v1
 metadata:
   name: {{ template "uname" . }}
+  labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}"
+    app: "{{ template "uname" . }}"
+  annotations:
+{{ toYaml .Values.service.annotations | indent 4 }}
 spec:
+  type: {{ .Values.service.type }}
   selector:
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    chart: "{{ .Chart.Name }}"
     app: "{{ template "uname" . }}"
   ports:
-  - name: http
+  - name: {{ .Values.service.httpPortName | default "http" }}
     protocol: TCP
     port: {{ .Values.httpPort }}
-  - name: transport
+{{- if .Values.service.nodePort }}
+    nodePort: {{ .Values.service.nodePort }}
+{{- end }}
+  - name: {{ .Values.service.transportPortName | default "transport" }}
     protocol: TCP
     port: {{ .Values.transportPort }}
 ---
@@ -21,21 +32,21 @@ kind: Service
 apiVersion: v1
 metadata:
   name: {{ template "uname" . }}-headless
-{{- if .Values.namespace }}
-  namespace: {{ .Values.namespace | quote }}
-{{- end }}
   labels:
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    chart: "{{ .Chart.Name }}"
     app: "{{ template "uname" . }}"
   annotations:
-    # Create endpoints also if the related pod isn't ready
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
   clusterIP: None # This is needed for statefulset hostnames like elasticsearch-0 to resolve
+  # Create endpoints also if the related pod isn't ready
+  publishNotReadyAddresses: true
   selector:
     app: "{{ template "uname" . }}"
   ports:
-  - name: http
+  - name: {{ .Values.service.httpPortName | default "http" }}
     port: {{ .Values.httpPort }}
+  - name: {{ .Values.service.transportPortName | default "transport" }}
+    port: {{ .Values.transportPort }}
